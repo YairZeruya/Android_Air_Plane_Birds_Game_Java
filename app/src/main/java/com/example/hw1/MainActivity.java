@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private final int MOVE_FREQUENCY = 1000;
     private final int CREATE_FREQUENCY = 2000;
     private final int DELAY = 500;
+    private Handler handler = new Handler();
 
 
     @Override
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 gameManager.updateObstaclePlace(i, main_IMG_obstacles);
                 gameManager.updateObstacleUI(main_IMG_obstacles);
                 gameManager.setObstaclesInGame(gameManager.getObstaclesInGame() - 1);
-                new Handler().postDelayed(() -> gameManager.updateAirPlaneUI(main_IMG_Air_Planes), DELAY);
+                handler.postDelayed(() -> gameManager.updateAirPlaneUI(main_IMG_Air_Planes), DELAY);
             }
         }
     }
@@ -134,11 +135,24 @@ public class MainActivity extends AppCompatActivity {
         if (gameManager.isLose()) {
             Toast.makeText(this, "Game Over!", Toast.LENGTH_SHORT).show();
             gameManager.vibrate(v, 1500);
+            onDestroy();
         } else {
             Toast.makeText(this, "crash!", Toast.LENGTH_SHORT).show();
             gameManager.vibrate(v, 500);
             gameManager.setAirPlaneVisibility(gameManager.getAirPlaneLocation(), true);
         }
+    }
+
+    private void stopGame() {
+        createObstacleTimer.cancel();
+        moveObstacleTimer.cancel();
+        handler.removeCallbacks(() -> gameManager.updateAirPlaneUI(main_IMG_Air_Planes), DELAY);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopGame();
     }
 
 }
