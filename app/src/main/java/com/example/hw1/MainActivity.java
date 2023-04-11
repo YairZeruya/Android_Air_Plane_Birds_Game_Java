@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         if (gameManager.isLose()) {
             Toast.makeText(this, "Game Over!", Toast.LENGTH_SHORT).show();
             gameManager.vibrate(v, 1500);
-            onDestroy();
+            stopGame();
         } else {
             Toast.makeText(this, "crash!", Toast.LENGTH_SHORT).show();
             gameManager.vibrate(v, 500);
