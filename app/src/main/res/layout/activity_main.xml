@@ -49,7 +49,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="60dp"
         android:layout_marginTop="40dp"
-        android:columnCount="3"
+        android:columnCount="5"
         android:rowCount="7">
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -62,10 +62,10 @@
             android:layout_gravity="fill"
             android:layout_margin="10dp"
             android:layout_height="0dp"
-            app:srcCompat="@drawable/bird_svgrepo_com"
-            />
+            app:srcCompat="@drawable/bird_svgrepo_com" />
 
         />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_01"
             android:layout_gravity="fill"
@@ -79,6 +79,7 @@
             app:srcCompat="@drawable/bird_svgrepo_com" />
 
         />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_02"
             android:layout_gravity="fill"
@@ -89,8 +90,34 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="10dp"
-            app:srcCompat="@drawable/bird_svgrepo_com"
-            />
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_03"
+            android:layout_gravity="fill"
+            android:layout_row="0"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+        />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_04"
+            android:layout_gravity="fill"
+            android:layout_row="0"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+        />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_10"
             android:layout_gravity="fill"
@@ -103,6 +130,7 @@
             android:layout_margin="10dp"
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_11"
             android:layout_gravity="fill"
@@ -115,11 +143,38 @@
             android:layout_margin="10dp"
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_12"
             android:layout_gravity="fill"
             android:layout_row="1"
             android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+        />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_13"
+            android:layout_gravity="fill"
+            android:layout_row="1"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+        />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_14"
+            android:layout_gravity="fill"
+            android:layout_row="1"
+            android:layout_column="4"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_width="0dp"
@@ -143,6 +198,7 @@
             android:layout_marginBottom="10dp"
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_21"
             android:layout_gravity="fill"
@@ -155,6 +211,7 @@
             android:layout_margin="10dp"
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_22"
             android:layout_gravity="fill"
@@ -167,6 +224,39 @@
             android:layout_margin="10dp"
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_23"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_row="2"
+            android:layout_rowWeight="1"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+        />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_24"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_row="2"
+            android:layout_rowWeight="1"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+        />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_30"
             android:layout_gravity="fill"
@@ -179,6 +269,7 @@
             android:layout_margin="10dp"
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_31"
             android:layout_gravity="fill"
@@ -192,6 +283,7 @@
 
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_32"
             android:layout_gravity="fill"
@@ -202,9 +294,35 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="10dp"
-
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_33"
+            android:layout_gravity="fill"
+            android:layout_row="3"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+        />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_34"
+            android:layout_gravity="fill"
+            android:layout_row="3"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+        />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_40"
             android:layout_gravity="fill"
@@ -215,9 +333,9 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="10dp"
-
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_41"
             android:layout_gravity="fill"
@@ -228,9 +346,9 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="10dp"
-
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_42"
             android:layout_gravity="fill"
@@ -241,7 +359,32 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="10dp"
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+        />
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_43"
+            android:layout_gravity="fill"
+            android:layout_row="4"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+        />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_44"
+            android:layout_gravity="fill"
+            android:layout_row="4"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
 
@@ -255,9 +398,9 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="10dp"
-
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_51"
             android:layout_gravity="fill"
@@ -268,9 +411,9 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="10dp"
-
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_52"
             android:layout_gravity="fill"
@@ -281,9 +424,35 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="10dp"
-
             app:srcCompat="@drawable/bird_svgrepo_com" />
         />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_53"
+            android:layout_gravity="fill"
+            android:layout_row="5"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+        />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_54"
+            android:layout_gravity="fill"
+            android:layout_row="5"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/bird_svgrepo_com" />
+        />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_60"
             android:layout_gravity="fill"
@@ -295,7 +464,7 @@
             android:layout_height="0dp"
             android:layout_margin="10dp"
             app:srcCompat="@drawable/baseline_local_airport_24" />
-
+        />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_61"
@@ -307,8 +476,9 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="10dp"
-            app:srcCompat="@drawable/baseline_local_airport_24"
-            />
+            app:srcCompat="@drawable/baseline_local_airport_24" />
+        />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_matrix_62"
             android:layout_gravity="fill"
@@ -319,8 +489,34 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="10dp"
-            app:srcCompat="@drawable/baseline_local_airport_24"
-            />
+            app:srcCompat="@drawable/baseline_local_airport_24" />
+        />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_63"
+            android:layout_gravity="fill"
+            android:layout_row="6"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/baseline_local_airport_24" />
+        />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_matrix_64"
+            android:layout_gravity="fill"
+            android:layout_row="6"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/baseline_local_airport_24" />
+        />
 
     </GridLayout>
 

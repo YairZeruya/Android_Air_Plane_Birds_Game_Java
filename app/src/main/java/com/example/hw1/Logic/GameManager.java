@@ -21,7 +21,7 @@ public class GameManager {
     private int startLife;
     private boolean[] isHeartVisible;
 
-    //Air Plane
+    //Airplane
     private int airPlaneLocation;
     private boolean[] isAirPlaneVisible;
 
@@ -72,39 +72,39 @@ public class GameManager {
     }
 
 
-    //*********************** Air Plane Methods ************************
+    //*********************** Airplane Methods ************************
 
 
     public void initAirplane(ShapeableImageView[] AirPlaneUI) {
-        airPlaneLocation = 1;
+        airPlaneLocation = OBSTACLE_COLUMNS / 2;
         isAirPlaneVisible = new boolean[OBSTACLE_COLUMNS];
         isAirPlaneVisible[OBSTACLE_COLUMNS / 2] = true;
-        updateAirPlaneUI(AirPlaneUI);
+        updateAirplaneUI(AirPlaneUI);
     }
 
-    public boolean moveAirPlaneLeft(ShapeableImageView[] AirPlaneUI) {
+    public boolean moveAirplaneLeft(ShapeableImageView[] AirPlaneUI) {
         if (airPlaneLocation == 0) {
             return false;
         }
         isAirPlaneVisible[airPlaneLocation] = false;
         airPlaneLocation -= 1;
         isAirPlaneVisible[airPlaneLocation] = true;
-        updateAirPlaneUI(AirPlaneUI);
+        updateAirplaneUI(AirPlaneUI);
         return true;
     }
 
-    public boolean moveAirPlaneRight(ShapeableImageView[] AirPlaneUI) {
-        if (airPlaneLocation == 2) {
+    public boolean moveAirplaneRight(ShapeableImageView[] AirPlaneUI) {
+        if (airPlaneLocation == OBSTACLE_COLUMNS - 1) {
             return false;
         }
         isAirPlaneVisible[airPlaneLocation] = false;
         airPlaneLocation += 1;
         isAirPlaneVisible[airPlaneLocation] = true;
-        updateAirPlaneUI(AirPlaneUI);
+        updateAirplaneUI(AirPlaneUI);
         return true;
     }
 
-    public void updateAirPlaneUI(ShapeableImageView[] AirPlaneUI) {
+    public void updateAirplaneUI(ShapeableImageView[] AirPlaneUI) {
         for (int i = 0; i < OBSTACLE_COLUMNS; i++) {
             ShapeableImageView sim = AirPlaneUI[i];
             if (!isAirPlaneVisible[i])
@@ -116,15 +116,15 @@ public class GameManager {
         }
     }
 
-    public int getAirPlaneLocation() {
+    public int getAirplaneLocation() {
         return airPlaneLocation;
     }
 
-    public boolean checkAirPlaneFlag(int i) {
+    public boolean checkAirplaneFlag(int i) {
         return isAirPlaneVisible[i];
     }
 
-    public void setAirPlaneVisibility(int i, boolean value) {
+    public void setAirplaneVisibility(int i, boolean value) {
         this.isAirPlaneVisible[i] = value;
     }
 
@@ -183,22 +183,13 @@ public class GameManager {
     }
 
     public void createObstacle(ShapeableImageView[][] obstaclesUI) {
-        int randColumn = obstacleStartPlace.nextInt(3);
+        int randColumn = obstacleStartPlace.nextInt(OBSTACLE_COLUMNS);
         if (!isObstacleVisible[0][randColumn]) {
             isObstacleVisible[0][randColumn] = true;
             obstaclesIndexArray.add(randColumn);
         }
         obstaclesInGame++;
         updateObstacleUI(obstaclesUI);
-    }
-
-    public void vibrate(Vibrator v, int ms) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(ms, VibrationEffect.DEFAULT_AMPLITUDE));
-        } else {
-            //deprecated in API 26
-            v.vibrate(ms);
-        }
     }
 }
 

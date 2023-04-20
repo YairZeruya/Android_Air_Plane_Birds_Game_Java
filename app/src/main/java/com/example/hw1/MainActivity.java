@@ -17,7 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
-    public static final int OBSTACLE_COLUMNS = 3;
+    public static final int OBSTACLE_COLUMNS = 5;
     public static final int OBSTACLE_ROWS = 6;
     private ExtendedFloatingActionButton main_left_button;
     private ExtendedFloatingActionButton main_right_button;
@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshUI() {
         gameTimer();
-        main_left_button.setOnClickListener(v -> gameManager.moveAirPlaneLeft(main_IMG_Air_Planes));
-        main_right_button.setOnClickListener(v -> gameManager.moveAirPlaneRight(main_IMG_Air_Planes));
+        main_left_button.setOnClickListener(v -> gameManager.moveAirplaneLeft(main_IMG_Air_Planes));
+        main_right_button.setOnClickListener(v -> gameManager.moveAirplaneRight(main_IMG_Air_Planes));
     }
 
 
@@ -77,26 +77,40 @@ public class MainActivity extends AppCompatActivity {
         main_IMG_obstacles = new ShapeableImageView[][]{
                 {findViewById(R.id.main_matrix_00),
                         findViewById(R.id.main_matrix_01),
-                        findViewById(R.id.main_matrix_02)},
+                        findViewById(R.id.main_matrix_02),
+                        findViewById(R.id.main_matrix_03),
+                        findViewById(R.id.main_matrix_04)},
                 {findViewById(R.id.main_matrix_10),
                         findViewById(R.id.main_matrix_11),
-                        findViewById(R.id.main_matrix_12)},
+                        findViewById(R.id.main_matrix_12),
+                        findViewById(R.id.main_matrix_13),
+                        findViewById(R.id.main_matrix_14)},
                 {findViewById(R.id.main_matrix_20),
                         findViewById(R.id.main_matrix_21),
-                        findViewById(R.id.main_matrix_22)},
+                        findViewById(R.id.main_matrix_22),
+                        findViewById(R.id.main_matrix_23),
+                        findViewById(R.id.main_matrix_24)},
                 {findViewById(R.id.main_matrix_30),
                         findViewById(R.id.main_matrix_31),
-                        findViewById(R.id.main_matrix_32)},
+                        findViewById(R.id.main_matrix_32),
+                        findViewById(R.id.main_matrix_33),
+                        findViewById(R.id.main_matrix_34)},
                 {findViewById(R.id.main_matrix_40),
                         findViewById(R.id.main_matrix_41),
-                        findViewById(R.id.main_matrix_42)},
+                        findViewById(R.id.main_matrix_42),
+                        findViewById(R.id.main_matrix_43),
+                        findViewById(R.id.main_matrix_44)},
                 {findViewById(R.id.main_matrix_50),
                         findViewById(R.id.main_matrix_51),
-                        findViewById(R.id.main_matrix_52)}};
+                        findViewById(R.id.main_matrix_52),
+                        findViewById(R.id.main_matrix_53),
+                        findViewById(R.id.main_matrix_54)}};
         main_IMG_Air_Planes = new ShapeableImageView[]{
                 findViewById(R.id.main_matrix_60),
                 findViewById(R.id.main_matrix_61),
-                findViewById(R.id.main_matrix_62)};
+                findViewById(R.id.main_matrix_62),
+                findViewById(R.id.main_matrix_63),
+                findViewById(R.id.main_matrix_64)};
     }
 
     private void moveObstacle() {
@@ -113,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 gameManager.updateObstaclePlace(i, main_IMG_obstacles);
                 gameManager.updateObstacleUI(main_IMG_obstacles);
                 gameManager.setObstaclesInGame(gameManager.getObstaclesInGame() - 1);
-                handler.postDelayed(() -> gameManager.updateAirPlaneUI(main_IMG_Air_Planes), DELAY);
+                handler.postDelayed(() -> gameManager.updateAirplaneUI(main_IMG_Air_Planes), DELAY);
             }
         }
     }
@@ -122,31 +136,30 @@ public class MainActivity extends AppCompatActivity {
         ShapeableImageView sim = main_IMG_Air_Planes[gameManager.getObstaclesIndexArray().get(i) % 10];
         sim.setImageResource(R.drawable.bird_svgrepo_com);
         sim.setVisibility(View.VISIBLE);
-        if (gameManager.checkAirPlaneFlag(gameManager.getObstaclesIndexArray().get(i) % 10)) {
+        if (gameManager.checkAirplaneFlag(gameManager.getObstaclesIndexArray().get(i) % 10)) {
             crash(sim);
         }
     }
 
     private void crash(ShapeableImageView sim) {
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         gameManager.loseLife(main_IMG_hearts);
         sim.setImageResource(R.drawable.collision_svgrepo_com);
         sim.setVisibility(View.VISIBLE);
         if (gameManager.isLose()) {
-            Toast.makeText(this, "Game Over!", Toast.LENGTH_SHORT).show();
-            gameManager.vibrate(v, 1500);
+            SignalGenerator.getInstance().toast("Game Over!", Toast.LENGTH_SHORT);
+            SignalGenerator.getInstance().vibrate(1500);
             stopGame();
         } else {
-            Toast.makeText(this, "crash!", Toast.LENGTH_SHORT).show();
-            gameManager.vibrate(v, 500);
-            gameManager.setAirPlaneVisibility(gameManager.getAirPlaneLocation(), true);
+            SignalGenerator.getInstance().toast("crash!", Toast.LENGTH_SHORT);
+            SignalGenerator.getInstance().vibrate(500);
+            gameManager.setAirplaneVisibility(gameManager.getAirplaneLocation(), true);
         }
     }
 
     private void stopGame() {
         createObstacleTimer.cancel();
         moveObstacleTimer.cancel();
-        handler.removeCallbacks(() -> gameManager.updateAirPlaneUI(main_IMG_Air_Planes), DELAY);
+        handler.removeCallbacks(() -> gameManager.updateAirplaneUI(main_IMG_Air_Planes), DELAY);
     }
 
     @Override
