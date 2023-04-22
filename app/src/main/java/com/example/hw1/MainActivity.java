@@ -3,9 +3,16 @@ package com.example.hw1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,12 +20,16 @@ import com.example.hw1.Logic.GameManager;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     public static final int OBSTACLE_COLUMNS = 5;
-    public static final int OBSTACLE_ROWS = 6;
+    public static final int OBSTACLE_ROWS = 9;
+    public static final String KEY_MOVE_FREQUENCY = "MOVE_FREQUENCY";
+    public static final String KEY_CREATE_FREQUENCY = "CREATE_FREQUENCY";
+    public static final int DELAY = 500;
     private ExtendedFloatingActionButton main_left_button;
     private ExtendedFloatingActionButton main_right_button;
     private ShapeableImageView[] main_IMG_hearts;
@@ -27,10 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private GameManager gameManager;
     private final Timer createObstacleTimer = new Timer();
     private final Timer moveObstacleTimer = new Timer();
-    private final int MOVE_FREQUENCY = 1000;
-    private final int CREATE_FREQUENCY = 2000;
-    private final int DELAY = 500;
     private Handler handler = new Handler();
+    private int createFrequency;
+    private int moveFrequency;
 
 
     @Override
@@ -39,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findViews();
         gameManager = new GameManager(main_IMG_hearts.length, main_IMG_Air_Planes, main_IMG_obstacles);
+        Intent previousIntent = getIntent();
+        createFrequency = previousIntent.getIntExtra(KEY_CREATE_FREQUENCY, 0);
+        moveFrequency = previousIntent.getIntExtra(KEY_MOVE_FREQUENCY, 0);
         refreshUI();
     }
 
@@ -48,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 runOnUiThread(() -> gameManager.createObstacle(main_IMG_obstacles));
             }
-        }, 0, CREATE_FREQUENCY);
+        }, DELAY, createFrequency);
 
 
         moveObstacleTimer.schedule(new TimerTask() {
@@ -56,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 runOnUiThread(() -> moveObstacle());
             }
-        }, DELAY, MOVE_FREQUENCY);
+        }, DELAY, moveFrequency);
 
     }
 
@@ -104,13 +117,28 @@ public class MainActivity extends AppCompatActivity {
                         findViewById(R.id.main_matrix_51),
                         findViewById(R.id.main_matrix_52),
                         findViewById(R.id.main_matrix_53),
-                        findViewById(R.id.main_matrix_54)}};
+                        findViewById(R.id.main_matrix_54)},
+                {findViewById(R.id.main_matrix_60),
+                        findViewById(R.id.main_matrix_61),
+                        findViewById(R.id.main_matrix_62),
+                        findViewById(R.id.main_matrix_63),
+                        findViewById(R.id.main_matrix_64)},
+                {findViewById(R.id.main_matrix_70),
+                        findViewById(R.id.main_matrix_71),
+                        findViewById(R.id.main_matrix_72),
+                        findViewById(R.id.main_matrix_73),
+                        findViewById(R.id.main_matrix_74)},
+                {findViewById(R.id.main_matrix_80),
+                        findViewById(R.id.main_matrix_81),
+                        findViewById(R.id.main_matrix_82),
+                        findViewById(R.id.main_matrix_83),
+                        findViewById(R.id.main_matrix_84)}};
         main_IMG_Air_Planes = new ShapeableImageView[]{
-                findViewById(R.id.main_matrix_60),
-                findViewById(R.id.main_matrix_61),
-                findViewById(R.id.main_matrix_62),
-                findViewById(R.id.main_matrix_63),
-                findViewById(R.id.main_matrix_64)};
+                findViewById(R.id.main_matrix_90),
+                findViewById(R.id.main_matrix_91),
+                findViewById(R.id.main_matrix_92),
+                findViewById(R.id.main_matrix_93),
+                findViewById(R.id.main_matrix_94)};
     }
 
     private void moveObstacle() {
@@ -146,10 +174,12 @@ public class MainActivity extends AppCompatActivity {
         sim.setImageResource(R.drawable.collision_svgrepo_com);
         sim.setVisibility(View.VISIBLE);
         if (gameManager.isLose()) {
+            SignalGenerator.getInstance().playSound();
             SignalGenerator.getInstance().toast("Game Over!", Toast.LENGTH_SHORT);
             SignalGenerator.getInstance().vibrate(1500);
             stopGame();
         } else {
+            SignalGenerator.getInstance().playSound();
             SignalGenerator.getInstance().toast("crash!", Toast.LENGTH_SHORT);
             SignalGenerator.getInstance().vibrate(500);
             gameManager.setAirplaneVisibility(gameManager.getAirplaneLocation(), true);

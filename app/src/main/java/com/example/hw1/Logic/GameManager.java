@@ -30,7 +30,7 @@ public class GameManager {
     private int obstaclesInGame;
     private Random obstacleStartPlace;
     private ArrayList<Integer> obstaclesIndexArray;//10 = [1][0] 22 = [2][2]
-
+    
 
     public GameManager(int life, ShapeableImageView[] airPlaneUI, ShapeableImageView[][] obstaclesUi) {
         initHearts(life);
