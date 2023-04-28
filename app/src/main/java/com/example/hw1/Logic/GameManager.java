@@ -7,11 +7,14 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.example.hw1.R;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 
 public class GameManager {
@@ -26,11 +29,19 @@ public class GameManager {
     private boolean[] isAirPlaneVisible;
 
     //Obstacles
-    private boolean[][] isObstacleVisible;
+    private int[][] isObstacleVisible;
     private int obstaclesInGame;
-    private Random obstacleStartPlace;
+    private Random objectStartPlace;
     private ArrayList<Integer> obstaclesIndexArray;//10 = [1][0] 22 = [2][2]
-    
+
+    //coins
+    private int score;
+    private int countObstacles;
+
+    public static final int EMPTY = 0;
+    public static final int BIRD = 1;
+    public static final int COIN = 2;
+
 
     public GameManager(int life, ShapeableImageView[] airPlaneUI, ShapeableImageView[][] obstaclesUi) {
         initHearts(life);
@@ -131,13 +142,19 @@ public class GameManager {
 
     //********************* Obstacle Methods **********************************
 
+    public boolean isCoin(int i) {
+        int rowIndex = obstaclesIndexArray.get(i) / 10;
+        int columnIndex = obstaclesIndexArray.get(i) % 10;
+        return isObstacleVisible[rowIndex][columnIndex] == COIN;
+    }
 
     public void initObstacles(ShapeableImageView[][] obstaclesUI) {
-        isObstacleVisible = new boolean[OBSTACLE_ROWS][OBSTACLE_COLUMNS];
-        obstacleStartPlace = new Random();
+        isObstacleVisible = new int[OBSTACLE_ROWS][OBSTACLE_COLUMNS];
+        objectStartPlace = new Random();
         obstaclesIndexArray = new ArrayList<>();
         updateObstacleUI(obstaclesUI);
         obstaclesInGame = 0;
+        score = 100;
     }
 
     public int getObstaclesInGame() {
@@ -152,23 +169,25 @@ public class GameManager {
         for (int i = 0; i < OBSTACLE_ROWS; i++) {
             for (int j = 0; j < OBSTACLE_COLUMNS; j++) {
                 ShapeableImageView sim = obstaclesUI[i][j];
-                if (!isObstacleVisible[i][j]) {
+                if (isObstacleVisible[i][j] == EMPTY) {
                     sim.setVisibility(View.INVISIBLE);
-                } else {
+                } else if (isObstacleVisible[i][j] == BIRD) {
                     sim.setVisibility(View.VISIBLE);
                     sim.setImageResource(R.drawable.bird_svgrepo_com);
+                } else if (isObstacleVisible[i][j] == COIN) {
+                    sim.setVisibility(View.VISIBLE);
+                    sim.setImageResource(R.drawable.coin_svgrepo_com);
                 }
             }
         }
     }
 
     public void updateObstaclePlace(int i, ShapeableImageView[][] obstaclesUI) {
-
         int rowIndex = obstaclesIndexArray.get(i) / 10;
         int columnIndex = obstaclesIndexArray.get(i) % 10;
-        if (isObstacleVisible[rowIndex][columnIndex]) {
-            this.isObstacleVisible[rowIndex][columnIndex] = false;
-            this.isObstacleVisible[rowIndex + 1][columnIndex] = true;
+        if (isObstacleVisible[rowIndex][columnIndex] == BIRD) {
+            this.isObstacleVisible[rowIndex][columnIndex] = EMPTY;
+            this.isObstacleVisible[rowIndex + 1][columnIndex] = BIRD;
             obstaclesIndexArray.set(i, obstaclesIndexArray.get(i) + 10);//next row
             updateObstacleUI(obstaclesUI);
         }
@@ -178,20 +197,70 @@ public class GameManager {
         return obstaclesIndexArray;
     }
 
-    public void setObstacleVisibility(int i, int j, boolean value) {
+    public void setObstacleVisibility(int i, int j, int value) {
         this.isObstacleVisible[i][j] = value;
     }
 
     public void createObstacle(ShapeableImageView[][] obstaclesUI) {
-        int randColumn = obstacleStartPlace.nextInt(OBSTACLE_COLUMNS);
-        if (!isObstacleVisible[0][randColumn]) {
-            isObstacleVisible[0][randColumn] = true;
+        int randColumn = objectStartPlace.nextInt(OBSTACLE_COLUMNS);
+        if (isObstacleVisible[0][randColumn] == EMPTY) {
+            isObstacleVisible[0][randColumn] = BIRD;
             obstaclesIndexArray.add(randColumn);
         }
         obstaclesInGame++;
         updateObstacleUI(obstaclesUI);
     }
+
+    //******************************* Coins Methods ****************************
+
+
+    public void updateCoinsPlace(int i, ShapeableImageView[][] obstacleUI) {
+        int rowIndex = obstaclesIndexArray.get(i) / 10;
+        int columnIndex = obstaclesIndexArray.get(i) % 10;
+        if (isObstacleVisible[rowIndex][columnIndex] == COIN) {
+            this.isObstacleVisible[rowIndex][columnIndex] = EMPTY;
+            this.isObstacleVisible[rowIndex + 1][columnIndex] = COIN;
+            obstaclesIndexArray.set(i, obstaclesIndexArray.get(i) + 10);//next row
+            updateObstacleUI(obstacleUI);
+        }
+    }
+
+
+    public void createCoins(ShapeableImageView[][] obstaclesUI) {
+        int randColumn = objectStartPlace.nextInt(OBSTACLE_COLUMNS);
+        if (isObstacleVisible[0][randColumn] == EMPTY) {
+            isObstacleVisible[0][randColumn] = COIN;
+            obstaclesIndexArray.add(randColumn);
+        }
+        obstaclesInGame++;
+        updateObstacleUI(obstaclesUI);
+    }
+
+    public void createObject(ShapeableImageView[][] obstaclesUI) {
+        if (countObstacles == 5) {
+            createCoins(obstaclesUI);
+            countObstacles = 0;
+        } else {
+            createObstacle(obstaclesUI);
+            countObstacles++;
+        }
+    }
+
+    public void updateScore(MaterialTextView scoreUI, int scoreToUpdate) {
+        scoreUI.setText("" + score);
+        score += scoreToUpdate;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
 }
+
+
+
+
+
 
 
 

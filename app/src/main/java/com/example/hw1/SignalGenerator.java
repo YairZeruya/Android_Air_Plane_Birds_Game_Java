@@ -21,7 +21,6 @@ public class SignalGenerator {
         if (instance == null) {
             instance = new SignalGenerator(context);
             vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-            mediaPlayer = new MediaPlayer();
             mediaPlayer = MediaPlayer.create(context, R.raw.crash_sound);
         }
     }
@@ -34,7 +33,9 @@ public class SignalGenerator {
         Toast.makeText(context, text, length).show();
     }
 
-    public void playSound() {
+    public void playSound(int soundId) {
+        mediaPlayer.release();
+        mediaPlayer = MediaPlayer.create(context, soundId);
         mediaPlayer.start();
     }
 

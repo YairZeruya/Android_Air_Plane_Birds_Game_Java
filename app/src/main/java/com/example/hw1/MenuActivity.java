@@ -10,10 +10,12 @@ import com.google.android.material.button.MaterialButton;
 
 public class MenuActivity extends AppCompatActivity {
     private Button[] menu_screen_BTN_options;
-    private final int SLOW_MOVE_FREQUENCY = 800;
-    private final int SLOW_CREATE_FREQUENCY = 1600;
+    private final int SLOW_MOVE_FREQUENCY = 500;
+    private final int SLOW_CREATE_FREQUENCY = 1000;
+    private final int SLOW_DELAY = 250;
     private final int FAST_MOVE_FREQUENCY = 200;
     private final int FAST_CREATE_FREQUENCY = 400;
+    private final int FAST_DELAY = 100;
 
 
     @Override
@@ -33,10 +35,13 @@ public class MenuActivity extends AppCompatActivity {
     private void checkButtonType(int buttonId) {
         switch (buttonId) {
             case R.id.menu_screen_slow_button:
-                openMainActivity(SLOW_MOVE_FREQUENCY, SLOW_CREATE_FREQUENCY);
+                openMainActivity(SLOW_MOVE_FREQUENCY, SLOW_CREATE_FREQUENCY, SLOW_DELAY);
                 break;
             case R.id.menu_screen_fast_button:
-                openMainActivity(FAST_MOVE_FREQUENCY, FAST_CREATE_FREQUENCY);
+                openMainActivity(FAST_MOVE_FREQUENCY, FAST_CREATE_FREQUENCY, FAST_DELAY);
+                break;
+            case R.id.menu_screen_records_button:
+                openRecordsActivity();
                 break;
             default:
                 break;
@@ -53,10 +58,16 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    private void openMainActivity(int moveFrequency, int CreateFrequency) {
+    private void openMainActivity(int moveFrequency, int CreateFrequency, int delay) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra((MainActivity.KEY_MOVE_FREQUENCY), moveFrequency);
         intent.putExtra((MainActivity.KEY_CREATE_FREQUENCY), CreateFrequency);
+        intent.putExtra((MainActivity.KEY_DELAY), delay);
+        startActivity(intent);
+    }
+
+    private void openRecordsActivity() {
+        Intent intent = new Intent(this, RecordsActivity.class);
         startActivity(intent);
     }
 }
