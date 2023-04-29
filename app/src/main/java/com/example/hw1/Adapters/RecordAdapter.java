@@ -1,4 +1,4 @@
-package com.example.hw1.Fragments;
+package com.example.hw1.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hw1.R;
-import com.example.hw1.Record;
+import com.example.hw1.Objects.Record;
 
 import java.util.ArrayList;
 

@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.hw1.Logic.GameManager;
+import com.example.hw1.Utilities.MySPv;
+import com.example.hw1.Objects.Record;
+import com.example.hw1.Utilities.SignalGenerator;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Record> recordArrayList = new ArrayList<>();
     private ArrayList<Integer> scoresArrayList = new ArrayList<>();
+    private int countRecords = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findViews();
         gameManager = new GameManager(main_IMG_hearts.length, main_IMG_Air_Planes, main_IMG_obstacles);
+        //MySPv.getInstance().clearSP();
         Intent previousIntent = getIntent();
         createFrequency = previousIntent.getIntExtra(KEY_CREATE_FREQUENCY, 0);
         moveFrequency = previousIntent.getIntExtra(KEY_MOVE_FREQUENCY, 0);
@@ -147,13 +152,13 @@ public class MainActivity extends AppCompatActivity {
                         findViewById(R.id.main_obstacle_83),
                         findViewById(R.id.main_obstacle_84)}};
 
-
         main_IMG_Air_Planes = new ShapeableImageView[]{
                 findViewById(R.id.main_airplane_90),
                 findViewById(R.id.main_airplane_91),
                 findViewById(R.id.main_airplane_92),
                 findViewById(R.id.main_airplane_93),
                 findViewById(R.id.main_airplane_94)};
+
         main_LBL_score = findViewById(R.id.main_LBL_score);
     }
 
@@ -232,22 +237,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private void updateRecordsTable() {
         Gson gson = new Gson();
-        String json;
+        int numOfRecords = MySPv.getInstance().getInt("Num Of Records", 0);
         int score = gameManager.getScore();
-        scoresArrayList.add(score);
-        Collections.sort(scoresArrayList);
-        for (int i = 0; i < Math.min(10, scoresArrayList.size()); i++) {
-            Record record = new Record("" + (i + 1), "" + (score));
+
+        // Update the number of records and current score
+        numOfRecords++;
+        MySPv.getInstance().putInt("Num Of Records", numOfRecords);
+        MySPv.getInstance().putInt("Score: " + numOfRecords, score);
+
+        // Add the current score to the scores list and sort it
+        for (int i = 0; i < numOfRecords; i++) {
+            int currScore = MySPv.getInstance().getInt("Score: " + (i + 1), 0);
+            scoresArrayList.add(currScore);
+        }
+        Collections.sort(scoresArrayList, Collections.reverseOrder()); // sort in descending order
+
+        // Create a list of the top 10 records
+        int numTopScores = Math.min(10, numOfRecords); // ensure we only show up to 10 records
+        for (int i = 0; i < numTopScores; i++) {
+            int currScore = scoresArrayList.get(i);
+            Record record = new Record("" + (i + 1), "" + (currScore));
             recordArrayList.add(record);
         }
-        for (int i = 0; i < Math.min(10, recordArrayList.size()); i++) {
-            json = gson.toJson(recordArrayList.get(i));
+
+        // Save the top 10 records to MySPv
+        for (int i = 0; i < numTopScores; i++) {
+            String json = gson.toJson(recordArrayList.get(i));
             MySPv.getInstance().putString("Rank: " + (i + 1), json);
         }
-
     }
 
     private void stopGame() {

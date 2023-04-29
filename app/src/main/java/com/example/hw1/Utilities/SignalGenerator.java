@@ -1,4 +1,4 @@
-package com.example.hw1;
+package com.example.hw1.Utilities;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -6,6 +6,8 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.widget.Toast;
+
+import com.example.hw1.R;
 
 public class SignalGenerator {
     private static SignalGenerator instance;

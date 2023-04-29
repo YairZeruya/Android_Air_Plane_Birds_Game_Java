@@ -1,4 +1,4 @@
-package com.example.hw1;
+package com.example.hw1.Objects;
 
 public class Record {
     private String rank;
@@ -16,7 +16,7 @@ public class Record {
     public String getScore() {
         return score;
     }
-    
+
 
     @Override
     public String toString() {

@@ -9,9 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hw1.Adapters.RecordAdapter;
 import com.example.hw1.Logic.DataManager;
-import com.example.hw1.Logic.GameManager;
-import com.example.hw1.MySPv;
 import com.example.hw1.R;
 
 public class RecordFragment extends Fragment {

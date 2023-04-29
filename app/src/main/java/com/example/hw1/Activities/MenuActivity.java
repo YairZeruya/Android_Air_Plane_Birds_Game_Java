@@ -1,4 +1,4 @@
-package com.example.hw1;
+package com.example.hw1.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hw1.MainActivity;
+import com.example.hw1.R;
 import com.google.android.material.button.MaterialButton;
 
 public class MenuActivity extends AppCompatActivity {

@@ -3,18 +3,13 @@ package com.example.hw1.Logic;
 import static com.example.hw1.MainActivity.OBSTACLE_COLUMNS;
 import static com.example.hw1.MainActivity.OBSTACLE_ROWS;
 
-import android.os.Build;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.example.hw1.R;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 
 public class GameManager {

@@ -1,9 +1,7 @@
-package com.example.hw1;
+package com.example.hw1.Utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import java.util.Map;
 
 public class MySPv {
     private static final String DB_FILE = "DB_FILE";
@@ -50,7 +48,10 @@ public class MySPv {
         return sharedPreferences.contains(key);
     }
 
-    public Map<String, ?> getAll() {
-        return sharedPreferences.getAll();
+    public void clearSP() {
+        //sharedPreferences = getSharedPreferences(DB_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
     }
 }
