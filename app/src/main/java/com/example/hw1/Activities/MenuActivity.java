@@ -18,6 +18,7 @@ public class MenuActivity extends AppCompatActivity {
     private final int FAST_MOVE_FREQUENCY = 200;
     private final int FAST_CREATE_FREQUENCY = 400;
     private final int FAST_DELAY = 100;
+    private final boolean SENSOR_MODE = false;
 
 
     @Override
@@ -37,13 +38,16 @@ public class MenuActivity extends AppCompatActivity {
     private void checkButtonType(int buttonId) {
         switch (buttonId) {
             case R.id.menu_screen_slow_button:
-                openMainActivity(SLOW_MOVE_FREQUENCY, SLOW_CREATE_FREQUENCY, SLOW_DELAY);
+                openMainActivity(SLOW_MOVE_FREQUENCY, SLOW_CREATE_FREQUENCY, SLOW_DELAY, SENSOR_MODE);
                 break;
             case R.id.menu_screen_fast_button:
-                openMainActivity(FAST_MOVE_FREQUENCY, FAST_CREATE_FREQUENCY, FAST_DELAY);
+                openMainActivity(FAST_MOVE_FREQUENCY, FAST_CREATE_FREQUENCY, FAST_DELAY, SENSOR_MODE);
                 break;
             case R.id.menu_screen_records_button:
                 openRecordsActivity();
+                break;
+            case R.id.menu_screen_sensor_button:
+                openMainActivity(SLOW_MOVE_FREQUENCY, SLOW_CREATE_FREQUENCY, SLOW_DELAY, !SENSOR_MODE);
                 break;
             default:
                 break;
@@ -60,11 +64,12 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    private void openMainActivity(int moveFrequency, int CreateFrequency, int delay) {
+    private void openMainActivity(int moveFrequency, int CreateFrequency, int delay, boolean sensorMode) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra((MainActivity.KEY_MOVE_FREQUENCY), moveFrequency);
         intent.putExtra((MainActivity.KEY_CREATE_FREQUENCY), CreateFrequency);
         intent.putExtra((MainActivity.KEY_DELAY), delay);
+        intent.putExtra((MainActivity.KEY_BUTTON_VISIBILITY), sensorMode);
         startActivity(intent);
     }
 

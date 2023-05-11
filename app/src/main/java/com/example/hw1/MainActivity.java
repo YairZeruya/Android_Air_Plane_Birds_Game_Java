@@ -10,18 +10,15 @@ import android.widget.Toast;
 
 import com.example.hw1.Logic.GameManager;
 import com.example.hw1.Utilities.MySPv;
-import com.example.hw1.Objects.Record;
+import com.example.hw1.Utilities.SensorMode;
 import com.example.hw1.Utilities.SignalGenerator;
+import com.example.hw1.Interfaces.TiltCallBack;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity {
     public static final int OBSTACLE_COLUMNS = 5;
@@ -29,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_MOVE_FREQUENCY = "KEY_MOVE_FREQUENCY";
     public static final String KEY_CREATE_FREQUENCY = "KEY_CREATE_FREQUENCY";
     public static final String KEY_DELAY = "KEY_DELAY";
+    public static final String KEY_BUTTON_VISIBILITY = "KEY_BUTTON_VISIBILITY";
     private ExtendedFloatingActionButton main_left_button;
     private ExtendedFloatingActionButton main_right_button;
     private ShapeableImageView[] main_IMG_hearts;
@@ -43,10 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private int createFrequency;
     private int moveFrequency;
     private int delay;
+    private boolean isSensorMode;
+    private SensorMode sensorMode;
 
-    private ArrayList<Record> recordArrayList = new ArrayList<>();
-    private ArrayList<Integer> scoresArrayList = new ArrayList<>();
-    private int countRecords = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +56,27 @@ public class MainActivity extends AppCompatActivity {
         createFrequency = previousIntent.getIntExtra(KEY_CREATE_FREQUENCY, 0);
         moveFrequency = previousIntent.getIntExtra(KEY_MOVE_FREQUENCY, 0);
         delay = previousIntent.getIntExtra(KEY_DELAY, 0);
+        isSensorMode = previousIntent.getBooleanExtra(KEY_BUTTON_VISIBILITY, false);
         refreshUI();
+    }
+
+    private void initStepDetector() {
+        sensorMode = new SensorMode(this, new TiltCallBack() {
+            @Override
+            public void TiltX() {
+                gameManager.moveAirplaneLeft(main_IMG_Air_Planes);
+            }
+
+            @Override
+            public void TiltY() {
+                gameManager.moveAirplaneRight(main_IMG_Air_Planes);
+            }
+
+            @Override
+            public void TiltZ() {
+
+            }
+        });
     }
 
     private void gameTimer() {
@@ -90,11 +107,30 @@ public class MainActivity extends AppCompatActivity {
         gameManager.updateScore(main_LBL_score, 10);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isSensorMode)
+            sensorMode.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isSensorMode)
+            sensorMode.stop();
+    }
 
     private void refreshUI() {
         gameTimer();
-        main_left_button.setOnClickListener(v -> gameManager.moveAirplaneLeft(main_IMG_Air_Planes));
-        main_right_button.setOnClickListener(v -> gameManager.moveAirplaneRight(main_IMG_Air_Planes));
+        if (!isSensorMode) {
+            main_left_button.setOnClickListener(v -> gameManager.moveAirplaneLeft(main_IMG_Air_Planes));
+            main_right_button.setOnClickListener(v -> gameManager.moveAirplaneRight(main_IMG_Air_Planes));
+        } else {
+            initStepDetector();
+            main_right_button.setVisibility(View.INVISIBLE);
+            main_left_button.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -227,45 +263,13 @@ public class MainActivity extends AppCompatActivity {
             SignalGenerator.getInstance().playSound(R.raw.crash_sound);
             SignalGenerator.getInstance().toast("Game Over!", Toast.LENGTH_SHORT);
             SignalGenerator.getInstance().vibrate(1500);
-            updateRecordsTable();
+            gameManager.updateRecordsTable(this);
             stopGame();
         } else {
             SignalGenerator.getInstance().playSound(R.raw.crash_sound);
             SignalGenerator.getInstance().toast("crash!", Toast.LENGTH_SHORT);
             SignalGenerator.getInstance().vibrate(500);
             gameManager.setAirplaneVisibility(gameManager.getAirplaneLocation(), true);
-        }
-    }
-
-    private void updateRecordsTable() {
-        Gson gson = new Gson();
-        int numOfRecords = MySPv.getInstance().getInt("Num Of Records", 0);
-        int score = gameManager.getScore();
-
-        // Update the number of records and current score
-        numOfRecords++;
-        MySPv.getInstance().putInt("Num Of Records", numOfRecords);
-        MySPv.getInstance().putInt("Score: " + numOfRecords, score);
-
-        // Add the current score to the scores list and sort it
-        for (int i = 0; i < numOfRecords; i++) {
-            int currScore = MySPv.getInstance().getInt("Score: " + (i + 1), 0);
-            scoresArrayList.add(currScore);
-        }
-        Collections.sort(scoresArrayList, Collections.reverseOrder()); // sort in descending order
-
-        // Create a list of the top 10 records
-        int numTopScores = Math.min(10, numOfRecords); // ensure we only show up to 10 records
-        for (int i = 0; i < numTopScores; i++) {
-            int currScore = scoresArrayList.get(i);
-            Record record = new Record("" + (i + 1), "" + (currScore));
-            recordArrayList.add(record);
-        }
-
-        // Save the top 10 records to MySPv
-        for (int i = 0; i < numTopScores; i++) {
-            String json = gson.toJson(recordArrayList.get(i));
-            MySPv.getInstance().putString("Rank: " + (i + 1), json);
         }
     }
 
@@ -281,6 +285,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         stopGame();
     }
+
 
 }
 

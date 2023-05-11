@@ -3,39 +3,57 @@ package com.example.hw1.Logic;
 import static com.example.hw1.MainActivity.OBSTACLE_COLUMNS;
 import static com.example.hw1.MainActivity.OBSTACLE_ROWS;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.view.View;
 
+import androidx.core.app.ActivityCompat;
+
+import com.example.hw1.Activities.RecordsActivity;
+import com.example.hw1.Fragments.MapFragment;
+import com.example.hw1.Objects.Record;
 import com.example.hw1.R;
+import com.example.hw1.Utilities.MySPv;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class GameManager {
 
-    //Hearts
+    // Hearts
     private int life;
     private int startLife;
     private boolean[] isHeartVisible;
 
-    //Airplane
+    // Airplane
     private int airPlaneLocation;
     private boolean[] isAirPlaneVisible;
 
-    //Obstacles
+    // Obstacles
     private int[][] isObstacleVisible;
     private int obstaclesInGame;
     private Random objectStartPlace;
     private ArrayList<Integer> obstaclesIndexArray;//10 = [1][0] 22 = [2][2]
 
-    //coins
+    // coins
     private int score;
     private int countObstacles;
-
     public static final int EMPTY = 0;
     public static final int BIRD = 1;
     public static final int COIN = 2;
+
+
+    // Records
+    private ArrayList<Record> recordArrayList = new ArrayList<>();
+    private ArrayList<Integer> scoresArrayList = new ArrayList<>();
 
 
     public GameManager(int life, ShapeableImageView[] airPlaneUI, ShapeableImageView[][] obstaclesUi) {
@@ -246,10 +264,52 @@ public class GameManager {
         score += scoreToUpdate;
     }
 
+
+    public void updateRecordsTable(Context context) {
+        Gson gson = new Gson();
+        int numOfRecords = MySPv.getInstance().getInt("Num Of Records", 0);
+
+        // Update the number of records and current score
+        numOfRecords++;
+        MySPv.getInstance().putInt("Num Of Records", numOfRecords);
+        MySPv.getInstance().putInt("Score: " + numOfRecords, score);
+
+        // Get the current location
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+
+        // Add the current score to the scores list and sort it
+        for (int i = 0; i < numOfRecords; i++) {
+            int currScore = MySPv.getInstance().getInt("Score: " + (i + 1), 0);
+            scoresArrayList.add(currScore);
+        }
+        Collections.sort(scoresArrayList, Collections.reverseOrder()); // sort in descending order
+
+        // Create a list of the top 10 records
+        int numTopScores = Math.min(10, numOfRecords); // ensure we only show up to 10 records
+        for (int i = 0; i < numTopScores; i++) {
+            int currScore = scoresArrayList.get(i);
+            Record record = new Record("" + (i + 1), "" + (currScore), latitude, longitude);
+            recordArrayList.add(record);
+        }
+
+        // Save the top 10 records to MySPv
+        for (int i = 0; i < numTopScores; i++) {
+            String json = gson.toJson(recordArrayList.get(i));
+            MySPv.getInstance().putString("Rank: " + (i + 1), json);
+        }
+    }
+
+
     public int getScore() {
         return score;
     }
-
 }
 
 

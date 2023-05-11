@@ -3,11 +3,13 @@ package com.example.hw1.Adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hw1.Interfaces.RecordCallBack;
 import com.example.hw1.R;
 import com.example.hw1.Objects.Record;
 
@@ -17,9 +19,18 @@ import java.util.ArrayList;
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordsViewHolder> {
 
     private ArrayList<Record> records;
+    private RecordCallBack recordCallBack;
 
-    public RecordAdapter(ArrayList<Record> records) {
+    public void setRecordCallBack(RecordCallBack recordCallBack) {
+        this.recordCallBack = recordCallBack;
+    }
+
+    public RecordAdapter(ArrayList<Record> records, RecordCallBack recordCallBack) {
         this.records = records;
+        this.recordCallBack = recordCallBack;
+        if (records == null) {
+            records = new ArrayList<>();
+        }
     }
 
     @NonNull
@@ -36,6 +47,14 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordsVie
         Record record = getItem(position);
         holder.record_LBL_rank.setText(record.getRank());
         holder.record_LBL_score.setText(record.getScore());
+        //holder.card_view.setOnClickListener(v -> recordClicked());
+        holder.record_layout.setOnClickListener(v -> recordClicked(record.getLatitude(), record.getLongitude()));
+    }
+
+    private void recordClicked(double latitude, double longitude) {
+        if (recordCallBack != null) {
+            recordCallBack.recordClicked(latitude, longitude);
+        }
     }
 
     @Override
@@ -43,19 +62,36 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordsVie
         return this.records == null ? 0 : this.records.size();
     }
 
-    private Record getItem(int position) {
+    public Record getItem(int position) {
         return this.records.get(position);
     }
 
     public class RecordsViewHolder extends RecyclerView.ViewHolder {
         private TextView record_LBL_rank;
         private TextView record_LBL_score;
+        //private CardView card_view;
+        private LinearLayout record_layout;
+
+
+//        private void recordClicked(Record record, int position) {
+//            if (recordCallBack != null) {
+//                recordCallBack.recordClicked(getItem(getAdapterPosition()), getAdapterPosition());
+//            }
+//        }
 
 
         public RecordsViewHolder(@NonNull View itemView) {
             super(itemView);
             record_LBL_rank = itemView.findViewById(R.id.rank_textview);
             record_LBL_score = itemView.findViewById(R.id.score_textview);
+            record_layout = itemView.findViewById(R.id.record_layout);
+            //card_view = itemView.findViewById(R.id.card_view);
+//            card_view.setOnClickListener(v -> {
+//                if (recordCallBack != null) {
+//                    recordCallBack.recordClicked(getItem(getAdapterPosition()), getAdapterPosition());
+//                }
+//            });
+            //record_layout.setOnClickListener(v -> recordClicked(getItem(getAdapterPosition()), getAdapterPosition()));
         }
     }
 }

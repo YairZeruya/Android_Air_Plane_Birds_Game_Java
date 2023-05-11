@@ -1,5 +1,6 @@
 package com.example.hw1.Fragments;
 
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hw1.Adapters.RecordAdapter;
+import com.example.hw1.Interfaces.RecordCallBack;
 import com.example.hw1.Logic.DataManager;
 import com.example.hw1.R;
 
 public class RecordFragment extends Fragment {
 
     private RecyclerView main_LST_records;
+    private RecordCallBack recordCallBack;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,7 +30,7 @@ public class RecordFragment extends Fragment {
     }
 
     private void initViews(View view) {
-        RecordAdapter recordAdapter = new RecordAdapter(DataManager.getRecords());
+        RecordAdapter recordAdapter = new RecordAdapter(DataManager.getRecords(), recordCallBack);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         main_LST_records.setAdapter(recordAdapter);
@@ -37,4 +40,9 @@ public class RecordFragment extends Fragment {
     private void findViews(View view) {
         main_LST_records = view.findViewById(R.id.main_LST_records);
     }
+
+    public void setRecordCallBack(RecordCallBack recordCallBack) {
+        this.recordCallBack = recordCallBack;
+    }
+
 }
