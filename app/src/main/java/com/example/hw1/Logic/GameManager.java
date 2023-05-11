@@ -3,7 +3,6 @@ package com.example.hw1.Logic;
 import static com.example.hw1.MainActivity.OBSTACLE_COLUMNS;
 import static com.example.hw1.MainActivity.OBSTACLE_ROWS;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -12,12 +11,10 @@ import android.view.View;
 
 import androidx.core.app.ActivityCompat;
 
-import com.example.hw1.Activities.RecordsActivity;
-import com.example.hw1.Fragments.MapFragment;
 import com.example.hw1.Objects.Record;
 import com.example.hw1.R;
 import com.example.hw1.Utilities.MySPv;
-import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
@@ -275,14 +272,15 @@ public class GameManager {
         MySPv.getInstance().putInt("Score: " + numOfRecords, score);
 
         // Get the current location
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
+//        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+//        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            return;
+//        }
+//        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//        double longitude = location.getLongitude();
+//        double latitude = location.getLatitude();
+        double[] latLong = getRecordLocation(context);
 
         // Add the current score to the scores list and sort it
         for (int i = 0; i < numOfRecords; i++) {
@@ -295,7 +293,7 @@ public class GameManager {
         int numTopScores = Math.min(10, numOfRecords); // ensure we only show up to 10 records
         for (int i = 0; i < numTopScores; i++) {
             int currScore = scoresArrayList.get(i);
-            Record record = new Record("" + (i + 1), "" + (currScore), latitude, longitude);
+            Record record = new Record("" + (i + 1), "" + (currScore), latLong[0], latLong[1]);
             recordArrayList.add(record);
         }
 
@@ -304,6 +302,38 @@ public class GameManager {
             String json = gson.toJson(recordArrayList.get(i));
             MySPv.getInstance().putString("Rank: " + (i + 1), json);
         }
+    }
+
+    private double[] getRecordLocation(Context context) {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        double[] latlong = new double[2];
+        latlong[0] = -1;
+        latlong[1] = -1;
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED) {
+            return latlong;
+        }
+
+        Location location = null;
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
+        if (location == null && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }
+        if (location == null && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
+            location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        }
+        if (location != null) {
+            latlong[0] = location.getLatitude();
+            latlong[1] = location.getLongitude();
+        } else {
+            latlong[0] = 0.0;
+            latlong[1] = 0.0;
+        }
+        return latlong;
     }
 
 

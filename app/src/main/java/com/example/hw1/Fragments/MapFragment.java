@@ -43,7 +43,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -56,7 +55,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         mMap.setMyLocationEnabled(true);
     }
-
 
     public void moveCamera(LatLng latLng, float zoom) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
@@ -98,8 +96,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .position(currLocation));
         moveCamera(currLocation, DEFAULT_ZOOM);
     }
-
-
+    
     private void getLocationPermission(View view) {
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION};

@@ -23,6 +23,11 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
     public static final int OBSTACLE_COLUMNS = 5;
     public static final int OBSTACLE_ROWS = 9;
+    public static final int DEFAULT_VALUE = 0;
+    public static final int SCORE_BY_DISTANCE = 10;
+    public static final int SCORE_BY_COIN = 100;
+    public static final int GAME_OVER_VIBRATE_LENGTH = 1500;
+    public static final int CRASH_VIBRATE_LENGTH = 500;
     public static final String KEY_MOVE_FREQUENCY = "KEY_MOVE_FREQUENCY";
     public static final String KEY_CREATE_FREQUENCY = "KEY_CREATE_FREQUENCY";
     public static final String KEY_DELAY = "KEY_DELAY";
@@ -53,9 +58,9 @@ public class MainActivity extends AppCompatActivity {
         gameManager = new GameManager(main_IMG_hearts.length, main_IMG_Air_Planes, main_IMG_obstacles);
         //MySPv.getInstance().clearSP();
         Intent previousIntent = getIntent();
-        createFrequency = previousIntent.getIntExtra(KEY_CREATE_FREQUENCY, 0);
-        moveFrequency = previousIntent.getIntExtra(KEY_MOVE_FREQUENCY, 0);
-        delay = previousIntent.getIntExtra(KEY_DELAY, 0);
+        createFrequency = previousIntent.getIntExtra(KEY_CREATE_FREQUENCY, DEFAULT_VALUE);
+        moveFrequency = previousIntent.getIntExtra(KEY_MOVE_FREQUENCY, DEFAULT_VALUE);
+        delay = previousIntent.getIntExtra(KEY_DELAY, DEFAULT_VALUE);
         isSensorMode = previousIntent.getBooleanExtra(KEY_BUTTON_VISIBILITY, false);
         refreshUI();
     }
@@ -85,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 runOnUiThread(() -> gameManager.createObject(main_IMG_obstacles));
             }
-        }, 0, createFrequency);
+        }, DEFAULT_VALUE, createFrequency);
 
         moveObstacleTimer.schedule(new TimerTask() {
             @Override
@@ -100,11 +105,11 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 runOnUiThread(() -> pointByDistance());
             }
-        }, 0, moveFrequency);
+        }, DEFAULT_VALUE, moveFrequency);
     }
 
     private void pointByDistance() {
-        gameManager.updateScore(main_LBL_score, 10);
+        gameManager.updateScore(main_LBL_score, SCORE_BY_DISTANCE);
     }
 
     @Override
@@ -236,12 +241,12 @@ public class MainActivity extends AppCompatActivity {
         sim.setImageResource(R.drawable.coin_svgrepo_com);
         sim.setVisibility(View.VISIBLE);
         if (gameManager.checkAirplaneFlag(gameManager.getObstaclesIndexArray().get(i) % 10)) {
-            addScore(sim);
+            addScore();
         }
     }
 
-    private void addScore(ShapeableImageView sim) {
-        gameManager.updateScore(main_LBL_score, 100);
+    private void addScore() {
+        gameManager.updateScore(main_LBL_score, SCORE_BY_COIN);
         SignalGenerator.getInstance().toast("+100", Toast.LENGTH_SHORT);
         gameManager.updateObstacleUI(main_IMG_obstacles);
     }
@@ -262,13 +267,13 @@ public class MainActivity extends AppCompatActivity {
         if (gameManager.isLose()) {
             SignalGenerator.getInstance().playSound(R.raw.crash_sound);
             SignalGenerator.getInstance().toast("Game Over!", Toast.LENGTH_SHORT);
-            SignalGenerator.getInstance().vibrate(1500);
+            SignalGenerator.getInstance().vibrate(GAME_OVER_VIBRATE_LENGTH);
             gameManager.updateRecordsTable(this);
             stopGame();
         } else {
             SignalGenerator.getInstance().playSound(R.raw.crash_sound);
             SignalGenerator.getInstance().toast("crash!", Toast.LENGTH_SHORT);
-            SignalGenerator.getInstance().vibrate(500);
+            SignalGenerator.getInstance().vibrate(CRASH_VIBRATE_LENGTH);
             gameManager.setAirplaneVisibility(gameManager.getAirplaneLocation(), true);
         }
     }
@@ -285,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         stopGame();
     }
-
-
+    
 }
 
