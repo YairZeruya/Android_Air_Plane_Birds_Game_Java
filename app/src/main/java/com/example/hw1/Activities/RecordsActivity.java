@@ -1,7 +1,5 @@
 package com.example.hw1.Activities;
 
-import static android.app.PendingIntent.getActivity;
-
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;

@@ -28,9 +28,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordsVie
     public RecordAdapter(ArrayList<Record> records, RecordCallBack recordCallBack) {
         this.records = records;
         this.recordCallBack = recordCallBack;
-        if (records == null) {
-            records = new ArrayList<>();
-        }
     }
 
     @NonNull
@@ -47,7 +44,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordsVie
         Record record = getItem(position);
         holder.record_LBL_rank.setText(record.getRank());
         holder.record_LBL_score.setText(record.getScore());
-        //holder.card_view.setOnClickListener(v -> recordClicked());
         holder.record_layout.setOnClickListener(v -> recordClicked(record.getLatitude(), record.getLongitude()));
     }
 

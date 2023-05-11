@@ -32,7 +32,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     private GoogleMap mMap;
 
     @Override
@@ -61,13 +61,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void getDeviceLocation() {
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.getContext());
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.getContext());
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        final Task location = mFusedLocationProviderClient.getLastLocation();
+        final Task location = fusedLocationProviderClient.getLastLocation();
         location.addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
@@ -96,7 +96,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .position(currLocation));
         moveCamera(currLocation, DEFAULT_ZOOM);
     }
-    
+
     private void getLocationPermission(View view) {
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION};

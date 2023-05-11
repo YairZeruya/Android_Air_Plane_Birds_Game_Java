@@ -1,5 +1,6 @@
 package com.example.hw1.Logic;
 
+import static com.example.hw1.MainActivity.DEFAULT_VALUE;
 import static com.example.hw1.MainActivity.OBSTACLE_COLUMNS;
 import static com.example.hw1.MainActivity.OBSTACLE_ROWS;
 
@@ -264,31 +265,19 @@ public class GameManager {
 
     public void updateRecordsTable(Context context) {
         Gson gson = new Gson();
-        int numOfRecords = MySPv.getInstance().getInt("Num Of Records", 0);
+        int numOfRecords = MySPv.getInstance().getInt("Num Of Records", DEFAULT_VALUE);
 
         // Update the number of records and current score
         numOfRecords++;
         MySPv.getInstance().putInt("Num Of Records", numOfRecords);
         MySPv.getInstance().putInt("Score: " + numOfRecords, score);
-
-        // Get the current location
-//        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-//        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            return;
-//        }
-//        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//        double longitude = location.getLongitude();
-//        double latitude = location.getLatitude();
         double[] latLong = getRecordLocation(context);
-
         // Add the current score to the scores list and sort it
         for (int i = 0; i < numOfRecords; i++) {
-            int currScore = MySPv.getInstance().getInt("Score: " + (i + 1), 0);
+            int currScore = MySPv.getInstance().getInt("Score: " + (i + 1), DEFAULT_VALUE);
             scoresArrayList.add(currScore);
         }
         Collections.sort(scoresArrayList, Collections.reverseOrder()); // sort in descending order
-
         // Create a list of the top 10 records
         int numTopScores = Math.min(10, numOfRecords); // ensure we only show up to 10 records
         for (int i = 0; i < numTopScores; i++) {
@@ -296,7 +285,6 @@ public class GameManager {
             Record record = new Record("" + (i + 1), "" + (currScore), latLong[0], latLong[1]);
             recordArrayList.add(record);
         }
-
         // Save the top 10 records to MySPv
         for (int i = 0; i < numTopScores; i++) {
             String json = gson.toJson(recordArrayList.get(i));
@@ -335,11 +323,7 @@ public class GameManager {
         }
         return latlong;
     }
-
-
-    public int getScore() {
-        return score;
-    }
+    
 }
 
 
