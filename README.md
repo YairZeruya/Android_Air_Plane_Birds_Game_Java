@@ -3,7 +3,8 @@
 This game is called "Airplane Dodger" and it challenges you to control a small airplane and avoid collisions with the birds that appear randomly in your path. The game was developed for Android using Java and the Android Studio IDE.
 
 In this game, you can play in two different modes - button or sensor. In button mode, you can choose between two options: slow and fast. Each mode offers a different level of difficulty and requires quick reflexes to avoid collisions.
-<img src=(https://github.com/YairZeruya/Android_Airplane_Dodger_Game_Java/assets/108290381/bfc5b73a-0a32-44ab-97fe-43deabacae2c)" width="300" height="600">
+<img src="https://github.com/YairZeruya/Android_Airplane_Dodger_Game_Java/blob/main/assets/108290381/bfc5b73a-0a32-44ab-97fe-43deabacae2c.gif" width="300" height="600">
+
 
 
 The game starts with three hearts, and every collision with a bird will cause you to lose a life (represented by a heart). You must try to dodge the birds quickly to avoid a collision and keep your lives.
