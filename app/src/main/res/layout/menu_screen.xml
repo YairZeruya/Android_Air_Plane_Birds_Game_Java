@@ -12,8 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
-        android:text="Airplane Birds Game"
-        android:textSize="33dp"
+        android:text="Airplane Dodger"
+        android:textSize="40dp"
         android:textStyle="bold|italic" />
 
     <ImageView
@@ -41,7 +41,8 @@
             android:layout_marginRight="100dp"
             android:text="Button Mode- Slow"
             android:backgroundTint="@color/blue_200"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:textStyle="bold|italic" />
 
         <Button
             android:id="@+id/menu_screen_fast_button"
@@ -52,7 +53,8 @@
             android:layout_marginRight="100dp"
             android:text="Button Mode- Fast"
             android:backgroundTint="@color/blue_200"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:textStyle="bold|italic" />
 
         <Button
             android:id="@+id/menu_screen_sensor_button"
@@ -63,7 +65,8 @@
             android:layout_marginRight="100dp"
             android:text="Sensor mode"
             android:backgroundTint="@color/blue_200"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:textStyle="bold|italic" />
 
         <Button
             android:id="@+id/menu_screen_records_button"
@@ -74,7 +77,8 @@
             android:layout_marginRight="100dp"
             android:text="Records"
             android:backgroundTint="@color/blue_200"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:textStyle="bold|italic" />
 
     </LinearLayout>
 

@@ -1,9 +1,13 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="@color/blue_200">
+    android:background="@color/blue_200"
+    android:elevation="8dp"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="20dp">
 
 
     <LinearLayout
@@ -11,29 +15,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/blue_200">
+        android:background="@drawable/card_view_selector">
 
         <TextView
             android:id="@+id/rank_textview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="24sp"
-            android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@android:color/black"
-            android:text="rank: 00000" />
+            android:textColor="@android:color/white"
+            android:text="rank: 00000"
+            android:textSize="40dp"
+            android:textStyle="bold|italic" />
 
         <TextView
             android:id="@+id/score_textview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="24sp"
-            android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@android:color/black"
-            android:text="score: not played yet" />
+            android:textColor="@android:color/white"
+            android:text="score: not played yet"
+            android:textSize="25dp"
+            android:textStyle="bold|italic" />
 
     </LinearLayout>
 

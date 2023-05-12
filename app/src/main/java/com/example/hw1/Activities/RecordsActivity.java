@@ -1,6 +1,8 @@
 package com.example.hw1.Activities;
 
+
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +10,7 @@ import com.example.hw1.Interfaces.RecordCallBack;
 import com.example.hw1.Fragments.RecordFragment;
 import com.example.hw1.Fragments.MapFragment;
 import com.example.hw1.R;
+import com.example.hw1.Utilities.SignalGenerator;
 
 public class RecordsActivity extends AppCompatActivity {
     private RecordFragment recordsFragment;
@@ -26,6 +29,7 @@ public class RecordsActivity extends AppCompatActivity {
         initFragments();
         recordsFragment.setRecordCallBack(recordCallBack);
         beginTransactions();
+        SignalGenerator.getInstance().toast("Press on a record to view its location.", Toast.LENGTH_LONG);
     }
 
     private void beginTransactions() {

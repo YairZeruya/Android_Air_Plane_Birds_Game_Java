@@ -29,8 +29,7 @@ public class SensorMode {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 float x = event.values[0];
-                float y = event.values[1];
-                move(x, y);
+                move(x);
             }
 
             @Override
@@ -39,15 +38,15 @@ public class SensorMode {
         };
     }
 
-    private void move(float x, float y) {
+    private void move(float x) {
         if (System.currentTimeMillis() - timestamp > 500) {
             timestamp = System.currentTimeMillis();
-            if (x > 6.0) {
-                tiltCallback.TiltX();
+            if (x > 2.0) {
+                tiltCallback.TiltLeft();
             }
 
-            if (y > 6.0) {
-                tiltCallback.TiltY();
+            if (x < -2.0) {
+                tiltCallback.TiltRight();
             }
         }
     }

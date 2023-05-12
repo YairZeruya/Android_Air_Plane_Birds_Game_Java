@@ -65,15 +65,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordsVie
     public class RecordsViewHolder extends RecyclerView.ViewHolder {
         private TextView record_LBL_rank;
         private TextView record_LBL_score;
-        //private CardView card_view;
         private LinearLayout record_layout;
-
-
-//        private void recordClicked(Record record, int position) {
-//            if (recordCallBack != null) {
-//                recordCallBack.recordClicked(getItem(getAdapterPosition()), getAdapterPosition());
-//            }
-//        }
 
 
         public RecordsViewHolder(@NonNull View itemView) {
@@ -81,13 +73,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordsVie
             record_LBL_rank = itemView.findViewById(R.id.rank_textview);
             record_LBL_score = itemView.findViewById(R.id.score_textview);
             record_layout = itemView.findViewById(R.id.record_layout);
-            //card_view = itemView.findViewById(R.id.card_view);
-//            card_view.setOnClickListener(v -> {
-//                if (recordCallBack != null) {
-//                    recordCallBack.recordClicked(getItem(getAdapterPosition()), getAdapterPosition());
-//                }
-//            });
-            //record_layout.setOnClickListener(v -> recordClicked(getItem(getAdapterPosition()), getAdapterPosition()));
         }
     }
 }

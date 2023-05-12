@@ -8,8 +8,8 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.hw1.Activities.RecordsActivity;
 import com.example.hw1.Logic.GameManager;
-import com.example.hw1.Utilities.MySPv;
 import com.example.hw1.Utilities.SensorMode;
 import com.example.hw1.Utilities.SignalGenerator;
 import com.example.hw1.Interfaces.TiltCallBack;
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findViews();
         gameManager = new GameManager(main_IMG_hearts.length, main_IMG_Air_Planes, main_IMG_obstacles);
-        //MySPv.getInstance().clearSP();
         Intent previousIntent = getIntent();
         createFrequency = previousIntent.getIntExtra(KEY_CREATE_FREQUENCY, DEFAULT_VALUE);
         moveFrequency = previousIntent.getIntExtra(KEY_MOVE_FREQUENCY, DEFAULT_VALUE);
@@ -65,22 +64,18 @@ public class MainActivity extends AppCompatActivity {
         refreshUI();
     }
 
-    private void initStepDetector() {
+    private void initSensorMode() {
         sensorMode = new SensorMode(this, new TiltCallBack() {
             @Override
-            public void TiltX() {
+            public void TiltLeft() {
                 gameManager.moveAirplaneLeft(main_IMG_Air_Planes);
             }
 
             @Override
-            public void TiltY() {
+            public void TiltRight() {
                 gameManager.moveAirplaneRight(main_IMG_Air_Planes);
             }
 
-            @Override
-            public void TiltZ() {
-
-            }
         });
     }
 
@@ -99,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }, delay, moveFrequency);
 
-
         pointsByDistanceTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -117,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if (isSensorMode)
             sensorMode.start();
+        SignalGenerator.getInstance().playBackgroundSound(R.raw.birds_background);
     }
 
     @Override
@@ -124,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         if (isSensorMode)
             sensorMode.stop();
+        SignalGenerator.getInstance().pauseBackgroundSound(R.raw.birds_background);
     }
 
     private void refreshUI() {
@@ -132,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
             main_left_button.setOnClickListener(v -> gameManager.moveAirplaneLeft(main_IMG_Air_Planes));
             main_right_button.setOnClickListener(v -> gameManager.moveAirplaneRight(main_IMG_Air_Planes));
         } else {
-            initStepDetector();
+            initSensorMode();
             main_right_button.setVisibility(View.INVISIBLE);
             main_left_button.setVisibility(View.INVISIBLE);
         }
@@ -249,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
         gameManager.updateScore(main_LBL_score, SCORE_BY_COIN);
         SignalGenerator.getInstance().toast("+100", Toast.LENGTH_SHORT);
         gameManager.updateObstacleUI(main_IMG_obstacles);
+        SignalGenerator.getInstance().playSound(R.raw.collect_coin);
     }
 
     private void moveObstacleToLastRow(int i) {
@@ -265,17 +262,24 @@ public class MainActivity extends AppCompatActivity {
         sim.setImageResource(R.drawable.collision_svgrepo_com);
         sim.setVisibility(View.VISIBLE);
         if (gameManager.isLose()) {
-            SignalGenerator.getInstance().playSound(R.raw.crash_sound);
-            SignalGenerator.getInstance().toast("Game Over!", Toast.LENGTH_SHORT);
+            SignalGenerator.getInstance().playSound(R.raw.carsh_sound2);
+            SignalGenerator.getInstance().toast("Game Over! Your Score: " + gameManager.getScore(), Toast.LENGTH_SHORT);
             SignalGenerator.getInstance().vibrate(GAME_OVER_VIBRATE_LENGTH);
             gameManager.updateRecordsTable(this);
             stopGame();
+            openRecordsActivity();
+            finish();
         } else {
-            SignalGenerator.getInstance().playSound(R.raw.crash_sound);
+            SignalGenerator.getInstance().playSound(R.raw.crash);
             SignalGenerator.getInstance().toast("crash!", Toast.LENGTH_SHORT);
             SignalGenerator.getInstance().vibrate(CRASH_VIBRATE_LENGTH);
             gameManager.setAirplaneVisibility(gameManager.getAirplaneLocation(), true);
         }
+    }
+
+    private void openRecordsActivity() {
+        Intent intent = new Intent(this, RecordsActivity.class);
+        startActivity(intent);
     }
 
     private void stopGame() {

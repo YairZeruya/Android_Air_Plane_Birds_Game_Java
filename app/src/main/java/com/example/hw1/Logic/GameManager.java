@@ -15,7 +15,6 @@ import androidx.core.app.ActivityCompat;
 import com.example.hw1.Objects.Record;
 import com.example.hw1.R;
 import com.example.hw1.Utilities.MySPv;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
@@ -257,6 +256,7 @@ public class GameManager {
         }
     }
 
+    // ******************************* Record Methods ****************************
     public void updateScore(MaterialTextView scoreUI, int scoreToUpdate) {
         scoreUI.setText("" + score);
         score += scoreToUpdate;
@@ -266,9 +266,8 @@ public class GameManager {
     public void updateRecordsTable(Context context) {
         Gson gson = new Gson();
         int numOfRecords = MySPv.getInstance().getInt("Num Of Records", DEFAULT_VALUE);
-
-        // Update the number of records and current score
         numOfRecords++;
+        // put the number of records and current score in MySPv
         MySPv.getInstance().putInt("Num Of Records", numOfRecords);
         MySPv.getInstance().putInt("Score: " + numOfRecords, score);
         double[] latLong = getRecordLocation(context);
@@ -277,9 +276,9 @@ public class GameManager {
             int currScore = MySPv.getInstance().getInt("Score: " + (i + 1), DEFAULT_VALUE);
             scoresArrayList.add(currScore);
         }
-        Collections.sort(scoresArrayList, Collections.reverseOrder()); // sort in descending order
+        Collections.sort(scoresArrayList, Collections.reverseOrder());
         // Create a list of the top 10 records
-        int numTopScores = Math.min(10, numOfRecords); // ensure we only show up to 10 records
+        int numTopScores = Math.min(10, numOfRecords);
         for (int i = 0; i < numTopScores; i++) {
             int currScore = scoresArrayList.get(i);
             Record record = new Record("" + (i + 1), "" + (currScore), latLong[0], latLong[1]);
@@ -323,7 +322,10 @@ public class GameManager {
         }
         return latlong;
     }
-    
+
+    public String getScore() {
+        return score + "";
+    }
 }
 
 

@@ -43,13 +43,7 @@ public class MySPv {
         editor.apply();
     }
 
-
-    public boolean contains(String key) {
-        return sharedPreferences.contains(key);
-    }
-
     public void clearSP() {
-        //sharedPreferences = getSharedPreferences(DB_FILE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
