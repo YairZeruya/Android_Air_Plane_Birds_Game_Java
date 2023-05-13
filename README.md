@@ -1,6 +1,6 @@
 **Airplane Dodger**
 
-This game is called "Airplane Dodger" and it challenges you to control a small airplane and avoid collisions with the birds that appear randomly in your path. The game was developed for Android using Java and the Android Studio IDE.
+This game is called "Airplane Dodger" and it challenges you to control a small airplane and avoid collisions with the birds that appear randomly in your path. The game was developed for Android using Java and the Android Studio IDE, and utilized various technologies such as SharedPreferences for data storage, the Google Maps API for location-based features, and the Gson library for parsing JSON data.
 
 In this game, you can play in two different modes - button or sensor. In button mode, you can choose between two options: slow and fast. In sensor mode, you have to tilt the device left and right to move the airplane. Each mode offers a different level of difficulty and requires quick reflexes to avoid collisions.
 
